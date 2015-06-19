@@ -1,4 +1,4 @@
-﻿using WinServiceBase.Framework.Infrastructure.Logging;
+﻿using WinServiceBase.Framework.Logging;
 using System;
 using System.Threading;
 
@@ -72,7 +72,7 @@ namespace WinServiceBase.Framework
             }
             catch (Exception err)
             {
-                ProcessLogger.ErrorException( string.Format( "Service [{0}] threw an exception during startup", ProcessName ), err );
+                ProcessLogger.ErrorException( err, string.Format( "Service [{0}] threw an exception during startup", ProcessName ) );
             }
         }
 
@@ -123,7 +123,7 @@ namespace WinServiceBase.Framework
             }
             catch (Exception err)
             {
-                ProcessLogger.ErrorException("Exception caught during process (" + ProcessName + ") stop: ", err);
+                ProcessLogger.ErrorException(err, "Exception caught during process (" + ProcessName + ") stop: " );
             }
         }
 

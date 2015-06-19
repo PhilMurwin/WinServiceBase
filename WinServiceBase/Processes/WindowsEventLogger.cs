@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Threading;
 using WinServiceBase.Framework;
-using WinServiceBase.Framework.Infrastructure.Logging;
 
 namespace WinServiceBase.Processes
 {
@@ -49,7 +48,7 @@ namespace WinServiceBase.Processes
             catch ( ThreadAbortException err )
             {
                 _windowsEventLog.WriteEntry( "ERR (WinServiceBase.Execute): Thread aborted." );
-                ProcessLogger.ErrorException( "ERR (WinServiceBase.Execute): Thread aborted.", err );
+                ProcessLogger.ErrorException( err, "ERR (WinServiceBase.Execute): Thread aborted.");
             }
         }
 
@@ -73,7 +72,7 @@ namespace WinServiceBase.Processes
             }
             catch ( Exception err )
             {
-                ProcessLogger.ErrorException( "Windows Event Logger threw an exception during startup", err );
+                ProcessLogger.ErrorException( err, "Windows Event Logger threw an exception during startup" );
             }
         }
     }

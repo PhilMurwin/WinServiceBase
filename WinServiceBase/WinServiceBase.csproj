@@ -59,11 +59,8 @@
     <Compile Include="App_Entry\ProcessSetup.cs" />
     <Compile Include="App_Entry\Program.cs" />
     <Compile Include="App_Data\ConfigKeys.cs" />
-    <Compile Include="Framework\Infrastructure\Logging\ILogger.cs" />
-    <Compile Include="Framework\Infrastructure\Logging\LogEntry.cs" />
-    <Compile Include="Framework\Infrastructure\Logging\LoggerExtensions.cs" />
-    <Compile Include="Framework\Infrastructure\Logging\LoggingEventType.cs" />
-    <Compile Include="Framework\Infrastructure\Logging\NLogLogger.cs" />
+    <Compile Include="Framework\Logging\ILogger.cs" />
+    <Compile Include="Framework\Logging\NLogLogger.cs" />
     <Compile Include="Framework\IProcessBase.cs" />
     <Compile Include="Framework\ProcessBase.cs" />
     <Compile Include="Framework\ProcessDetails.cs" />

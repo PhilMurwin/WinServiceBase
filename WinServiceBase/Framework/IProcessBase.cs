@@ -1,4 +1,4 @@
-﻿using WinServiceBase.Framework.Infrastructure.Logging;
+﻿using WinServiceBase.Framework.Logging;
 
 namespace WinServiceBase.Framework
 {

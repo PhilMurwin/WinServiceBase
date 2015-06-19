@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ServiceProcess;
 using WinServiceBase.Framework;
-using WinServiceBase.Framework.Infrastructure.Logging;
+using WinServiceBase.Framework.Logging;
 
 namespace WinServiceBase.App_Entry
 {
@@ -33,7 +33,7 @@ namespace WinServiceBase.App_Entry
                     }
                     catch ( Exception err )
                     {
-                        _logger.ErrorException( string.Format( "An error occurred while starting process {0}", process.ProcessName ), err );
+                        _logger.ErrorException( err, string.Format( "An error occurred while starting process {0}", process.ProcessName ) );
                     }
                 }
             }
