@@ -9,18 +9,20 @@ namespace WinServiceBase.Framework
     /// </summary>
     public abstract class ProcessBase : IProcessBase
     {
+        protected const int MillisecondsInMinute = 60 * 1000;
+
         private Thread _processThread;
         private AutoResetEvent _threadExitEvent;
         private ILogger _logger;
 
-        public abstract string ExitCode
+        public abstract string StopCode
         {
             get;
         }
 
-        public abstract string ExitInstructions
+        public string ExitInstructions
         {
-            get;
+            get { return string.Format( "{0} Process started. Type '{1}' to stop the process.", ProcessName, StopCode ); }
         }
 
         public abstract bool CanStartProcess

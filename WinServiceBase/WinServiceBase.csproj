@@ -58,7 +58,7 @@
     <Compile Include="App_Entry\Options.cs" />
     <Compile Include="App_Entry\ProcessSetup.cs" />
     <Compile Include="App_Entry\Program.cs" />
-    <Compile Include="ConfigKeys.cs" />
+    <Compile Include="App_Data\ConfigKeys.cs" />
     <Compile Include="Framework\Infrastructure\Logging\ILogger.cs" />
     <Compile Include="Framework\Infrastructure\Logging\LogEntry.cs" />
     <Compile Include="Framework\Infrastructure\Logging\LoggerExtensions.cs" />
@@ -72,7 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NLog.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

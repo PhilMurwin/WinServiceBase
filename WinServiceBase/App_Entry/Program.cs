@@ -66,10 +66,11 @@ namespace WinServiceBase.App_Entry
                 {
                     Console.WriteLine( process.ExitInstructions );
                 }
-                Console.WriteLine( "Enter ExitAll to stop application: " );
+                Console.WriteLine( "Type 'ExitAll' to stop application: " );
 
                 var input = Console.ReadLine() ?? "";
 
+                // Check if we should exit 1+ processes, exit as appropriate
                 if (input.ToLower() == "exitall")
                 {
                     exitLoop = true;
@@ -80,7 +81,8 @@ namespace WinServiceBase.App_Entry
                 }
                 else
                 {
-                    var process = processes.Find( p => p.ExitCode.ToLower() == input.ToLower());
+                    var process = processes.Find( p => p.StopCode.ToLower() == input.ToLower());
+
                     if (process != null)
                     {
                         process.Stop();

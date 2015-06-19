@@ -4,7 +4,7 @@ namespace WinServiceBase.Framework
 {
     public interface IProcessBase
     {
-        string ExitCode
+        string StopCode
         {
             get;
         }

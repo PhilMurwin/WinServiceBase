@@ -12,19 +12,11 @@ namespace WinServiceBase.Processes
     /// </summary>
     public class WindowsEventLogger : ProcessBase
     {
-        private EventLog _log;
+        private EventLog _windowsEventLog;
 
-        public override string ExitCode
+        public override string StopCode
         {
             get { return "ExitLogger"; }
-        }
-
-        public override string ExitInstructions
-        {
-            get
-            {
-                return string.Format("Event Logger process started. Type '{0}' to stop the process.", ExitCode);
-            }
         }
 
         public override bool CanStartProcess
@@ -43,19 +35,21 @@ namespace WinServiceBase.Processes
                 while ( true )
                 {
                     //Write current time to eventlog
-                    _log.WriteEntry( string.Format( "INFO (WinServiceBase.Execute): Current time is: {0}.", DateTime.Now.ToString( "HH:mm:ss" ) ) );
+                    _windowsEventLog.WriteEntry( string.Format( "INFO (WinServiceBase.Execute): Current time is: {0}.", DateTime.Now.ToString( "HH:mm:ss" ) ) );
+                    ProcessLogger.Info( "test nlog Logger" );
 
                     // Wait n milliseconds for exit event signal before continuing
                     // If exit event signaled break out of loop
-                    if ( WaitForExitEvent( 60 * 1000 ) )
+                    if ( WaitForExitEvent( MillisecondsInMinute ) )
                     {
                         break;
                     }
                 }
             }
-            catch ( ThreadAbortException )
+            catch ( ThreadAbortException err )
             {
-                _log.WriteEntry( "ERR (WinServiceBase.Execute): Thread aborted." );
+                _windowsEventLog.WriteEntry( "ERR (WinServiceBase.Execute): Thread aborted." );
+                ProcessLogger.ErrorException( "ERR (WinServiceBase.Execute): Thread aborted.", err );
             }
         }
 
@@ -73,7 +67,7 @@ namespace WinServiceBase.Processes
                     EventLog.CreateEventSource( "EventLoggerSource", "Event Logger" );
                 }
 
-                _log = new EventLog( "Event Logger" ) { Source = "EventLoggerSource" };
+                _windowsEventLog = new EventLog( "Event Logger" ) { Source = "WinServiceBase" };
 
                 base.Start();
             }
