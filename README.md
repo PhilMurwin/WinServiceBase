@@ -17,8 +17,10 @@ thread.  Processes are expected to have a boolean config flag in the app.config
     * REQUIRED: CanStartProcess - bool variable used to determine if the process should be started when the application is started
     * REQUIRED: ExecuteProcess() - This method is called to start the process in it's own thread.  This should
     contain a while loop that exits based on a wait event. (see windows event logger for example)
-    * REQUIRED: ExitCode - string variable used to shutdown the process on command
-	* REQUIRED: ExitInstructions - string variable printed in the console on startup when the application is started in console mode    
+    * REQUIRED: StopCode - string variable used to shutdown the process on command
+    * REQUIRED: ExitInstructions - string variable printed in the console on startup when the application is started in console mode
+* NLog can be used for logging
+    * A default logger is instantiated for processes deriving from ProcessBase, use ProcessLogger for creating log messages
 
 ### Existing Processes
 * Windows Event Logger
