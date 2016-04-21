@@ -11,6 +11,7 @@ thread.  Processes are expected to have a boolean config flag in the app.config
 * **To run as a windows service**
     * Use the "Batch Files" to add the windows service to the local services management console on your local
     or server machine
+    * Batch Scripts are written for the path: C:\Services\WinServiceBase\WinServiceBase.exe
 
 ### Adding a Process
 * Create a new class that derives from ProcessBase
