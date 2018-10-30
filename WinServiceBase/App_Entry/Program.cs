@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CommandLine;
+using System;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using WinServiceBase.Framework.Logging;
@@ -18,19 +19,22 @@ namespace WinServiceBase.App_Entry
         static void Main( string[] args )
         {
             // Parse command line options
-            var options = new Options();
-            if ( CommandLine.Parser.Default.ParseArguments( args, options ) )
+            var cliArgs = CommandLine.Parser.Default.ParseArguments<Options>( args )
+                .WithParsed( opts => RunWithOptions( opts ) );
+        }
+
+        private static void RunWithOptions(Options options)
+        {
+            // Act on the CLI options
+            // -c or --console
+            if (options.Console)
             {
-                // Act on the CLI options
-                if ( options.Console || ( args.Length > 0 && args[0].ToLower() == "/console" ) )
-                {
-                    ConsoleStartup();
-                }
-                // If there were no options passed start the service
-                else
-                {
-                    StartWinService();
-                }
+                ConsoleStartup();
+            }
+            // If there were no options passed, start the service
+            else
+            {
+                StartWinService();
             }
         }
 

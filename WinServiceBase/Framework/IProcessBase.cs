@@ -41,6 +41,11 @@ namespace WinServiceBase.Framework
         void ExecuteProcess();
 
         /// <summary>
+        /// Process Logic
+        /// </summary>
+        void DoProcessWork();
+
+        /// <summary>
         /// Instantiates Thread to call ExecuteProcess on start; also instantiates the exit event for the thread
         /// <para>Any necessary setup prior to the start of thread should be done in an override that calls 
         /// base.Start() at the end</para>

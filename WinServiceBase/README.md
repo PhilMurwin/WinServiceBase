@@ -1,5 +1,5 @@
 ﻿## WinServiceBase Summary
-This is a windows service base project that is designed to run multiple processes semi-dynamically.  It can be
+This is a windows service base project that is designed to run multiple processes.  It can be
 run from the command line using a flag or as a windows service.  Starts up multiple processes each in it's own
 thread.  Processes are expected to have a boolean config flag in the app.config
 
@@ -14,13 +14,13 @@ thread.  Processes are expected to have a boolean config flag in the app.config
 
 ### Adding a Process
 * Create a new class that derives from ProcessBase
-    * REQUIRED: CanStartProcess - bool variable used to determine if the process should be started when the application is started
-    * REQUIRED: ExecuteProcess() - This method is called to start the process in it's own thread.  This should
-    contain a while loop that exits based on a wait event. (see windows event logger for example)
-    * REQUIRED: ExitCode - string variable used to shutdown the process on command
-	* REQUIRED: ExitInstructions - string variable printed in the console on startup when the application is started in console mode    
+    * **Required**: *StopCode*- string variable used to shutdown the process from command line
+    * **Required**: *CanStartProcess* - bool variable used to determine if the process should be started when the application is started
+    * **Required**: *Frequency* - Sets how often (in minutes) the process should be called
+    * **Required**: *DoProcessWork()* - This method is called to execute the process logic.
 
 ### Existing Processes
-* Windows Event Logger
-    * A simple process that creates an entry in the windows event log once a minute.
-    * Primarily used to test that the service is functional, not used outside the dev environment
+* Basic Time Logger
+    * A simple process that creates a log entry in a log file.
+    * Primarily used to test that the service is functional
+

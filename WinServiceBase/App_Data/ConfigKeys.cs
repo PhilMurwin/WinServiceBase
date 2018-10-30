@@ -5,17 +5,17 @@ namespace WinServiceBase
 {
     public static class ConfigKeys
     {
-        #region Windows Event Logger Settings
-        public static bool WindowsEventLogger
+        #region Basic Time Logger Settings
+        public static bool BasicTimeLogger
         {
             get
             {
                 bool boolParse;
-                Boolean.TryParse( GetConfigKey( "WindowsEventLogger" ), out boolParse );
+                Boolean.TryParse( GetConfigKey( "BasicTimeLogger" ), out boolParse );
                 return boolParse;
             }
         }
-        #endregion Windows Event Logger Settings
+        #endregion Basic Time Logger Settings
 
         /// <summary>
         /// Helper method for getting config keys

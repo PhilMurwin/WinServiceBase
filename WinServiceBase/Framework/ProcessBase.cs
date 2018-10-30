@@ -9,11 +9,28 @@ namespace WinServiceBase.Framework
     /// </summary>
     public abstract class ProcessBase : IProcessBase
     {
+        protected const int DefaultSleepSeconds = 30 * 1000;
         protected const int MillisecondsInMinute = 60 * 1000;
 
         private Thread _processThread;
         private AutoResetEvent _threadExitEvent;
         private ILogger _logger;
+
+        /// <summary>
+        /// Provides access to a logger for the process
+        /// </summary>
+        public ILogger ProcessLogger
+        {
+            get { return _logger ?? ( _logger = new NLogLogger( GetType().ToString() ) ); }
+        }
+
+        /// <summary>
+        /// Returns the name of the current process for use in error messages etc...
+        /// </summary>
+        public string ProcessName
+        {
+            get { return GetType().Name; }
+        }
 
         public abstract string StopCode
         {
@@ -30,26 +47,68 @@ namespace WinServiceBase.Framework
             get;
         }
 
+        private DateTime m_LastRunTime = DateTime.Now;
+
         /// <summary>
-        /// Returns the name of the current process for use in error messages etc...
+        /// This time is used to determine how often (the frequency) DoProcessWork is executed.
+        /// <para>It defaults to the current time on initialization.</para>
         /// </summary>
-        public string ProcessName
+        protected DateTime LastRunTime
         {
-            get { return GetType().Name; }
+            get
+            {
+                return m_LastRunTime;
+            }
+            set
+            {
+                m_LastRunTime = value;
+            }
         }
 
         /// <summary>
-        /// Provides access to a logger for the process
+        /// Frequncy (in minutes) to execute the process.
+        /// <para>This should typically be set via a config setting that is read in the override of this property.</para>
         /// </summary>
-        public ILogger ProcessLogger
+        public abstract int Frequency
         {
-            get { return _logger ?? (_logger = new NLogLogger(GetType().ToString())); }
+            get;
         }
 
         /// <summary>
-        /// Starting point for the logic of the process
+        /// Default Process Loop
+        /// <para>Sleeps the thread/process for some amount of time after each run of DoProcessWork.</para>
+        /// <para>Override this if you need a less frequent process run frequency.</para>
+        /// <para>If you override this method don't call the base version and be sure to set the LastRunTime after your process executes</para>
         /// </summary>
-        public abstract void ExecuteProcess();
+        public virtual void ExecuteProcess()
+        {
+            // Set LastRunTime to now - frequency so the process executes immediately on startup
+            LastRunTime = DateTime.Now.AddMinutes( -Frequency );
+
+            while ( true )
+            {
+                if (DateTime.Now >= LastRunTime.AddMinutes(Frequency ) )
+                {
+                    ProcessLogger.Debug( "Calling DoProcessWork for process [{0}].", ProcessName );
+
+                    DoProcessWork();
+
+                    LastRunTime = DateTime.Now;
+                }
+
+                // Wait n milliseconds for exit event signal before continuing
+                // If exit event signaled break out of loop
+                if (WaitForExitEvent(DefaultSleepSeconds ) )
+                {
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Process Logic
+        /// </summary>
+        public abstract void DoProcessWork();
 
         /// <summary>
         /// Instantiates Thread to call ExecuteProcess on start; also instantiates the exit event for the thread
@@ -60,7 +119,7 @@ namespace WinServiceBase.Framework
         {
             try
             {
-                ProcessLogger.Info(string.Format("*** Starting service [{0}]", ProcessName));
+                ProcessLogger.Info(string.Format("*** Start process [{0}] ***", ProcessName));
 
                 //Create event that will be used to stop the thread
                 _threadExitEvent = new AutoResetEvent(false);
@@ -107,7 +166,7 @@ namespace WinServiceBase.Framework
                 //Close all threads as long as we're stopped.  (don't want to close events that are still in a wait)
                 if (isThreadStopped)
                 {
-                    ProcessLogger.Info(ProcessName + " process has been successfully stopped.");
+                    ProcessLogger.Debug(ProcessName + " process has been successfully stopped.");
 
                     if (_threadExitEvent != null)
                     {
@@ -119,7 +178,7 @@ namespace WinServiceBase.Framework
                 _threadExitEvent = null;
                 _processThread = null;
 
-                ProcessLogger.Info( string.Format("*** Stop service [{0}]", ProcessName) );
+                ProcessLogger.Info( string.Format("*** Stop process [{0}] ***", ProcessName) );
             }
             catch (Exception err)
             {
