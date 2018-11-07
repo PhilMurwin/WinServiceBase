@@ -1,5 +1,6 @@
 ﻿using CommandLine;
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using WinServiceBase.Framework.Logging;
@@ -25,17 +26,20 @@ namespace WinServiceBase.App_Entry
 
         private static void RunWithOptions(Options options)
         {
+            var isService = !( Debugger.IsAttached || options.Console );
+
             // Act on the CLI options
-            // -c or --console
-            if (options.Console)
-            {
-                ConsoleStartup();
-            }
             // If there were no options passed, start the service
-            else
+            if( isService )
             {
                 StartWinService();
             }
+            // Debugger Attached or -c or --console
+            else
+            {
+                ConsoleStartup();
+            }
+            
         }
 
         private static void ConsoleStartup()
