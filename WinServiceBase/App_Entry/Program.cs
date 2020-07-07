@@ -19,6 +19,8 @@ namespace WinServiceBase.App_Entry
         /// </summary>
         static void Main( string[] args )
         {
+            Logger.Info( "*** Starting WinServiceBase Program ***" );
+
             // Parse command line options
             var cliArgs = CommandLine.Parser.Default.ParseArguments<Options>( args )
                 .WithParsed( opts => RunWithOptions( opts ) );
@@ -40,6 +42,12 @@ namespace WinServiceBase.App_Entry
                 ConsoleStartup();
             }
             
+        }
+
+        private static void StartWinService()
+        {
+            ServiceBase[] servicesToRun = new ServiceBase[] { new WinService() };
+            ServiceBase.Run( servicesToRun );
         }
 
         private static void ConsoleStartup()
@@ -99,12 +107,6 @@ namespace WinServiceBase.App_Entry
                     }
                 }
             }
-        }
-
-        private static void StartWinService()
-        {
-            ServiceBase[] servicesToRun = new ServiceBase[] { new WinService() };
-            ServiceBase.Run( servicesToRun );
         }
     }
 }

@@ -5,7 +5,8 @@ thread.  Processes are expected to have a boolean config flag in the app.config
 
 ### Running the application/service
 * **To run in Visual Studio Debug mode or from the command line**
-    * Set "-c" in the debug tab's command line arguments
+    * Running in debug build mode in VS will open via console
+    * or Set "-c" in the debug tab's command line arguments
 * **To run from a command prompt**
     * pass "-c" to the executable as you would any command line
 * **To run as a windows service**
