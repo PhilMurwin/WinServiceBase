@@ -19,11 +19,29 @@ namespace WinServiceBase.App_Entry
         /// </summary>
         static void Main( string[] args )
         {
-            Logger.Info( "*** Starting WinServiceBase Program ***" );
+            AppDomain currentDomain = AppDomain.CurrentDomain;
+            currentDomain.UnhandledException += new UnhandledExceptionEventHandler( UnhandledExceptionHandler );
 
-            // Parse command line options
-            var cliArgs = CommandLine.Parser.Default.ParseArguments<Options>( args )
-                .WithParsed( opts => RunWithOptions( opts ) );
+            try
+            {
+                Logger.Info( "*** Starting WinServiceBase Program ***" );
+
+                // Parse command line options
+                var cliArgs = CommandLine.Parser.Default.ParseArguments<Options>( args )
+                    .WithParsed( opts => RunWithOptions( opts ) );
+            }
+            catch(Exception err)
+            {
+                Logger.ErrorException( err, "Error in Main starting the service." );
+            }
+        }
+
+        private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args)
+        {
+            Exception err = (Exception)args.ExceptionObject;
+            Logger.ErrorException( err, "An unhandled exception occurred!" );
+
+            Environment.Exit( 1 );
         }
 
         private static void RunWithOptions(Options options)

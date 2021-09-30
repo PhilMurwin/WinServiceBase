@@ -1,20 +1,13 @@
-﻿using System;
-using System.Configuration;
+﻿using System.Configuration;
 
 namespace WinServiceBase
 {
     public static class ConfigKeys
     {
         #region Basic Time Logger Settings
-        public static bool BasicTimeLogger
-        {
-            get
-            {
-                bool boolParse;
-                Boolean.TryParse( GetConfigKey( "BasicTimeLogger" ), out boolParse );
-                return boolParse;
-            }
-        }
+        public static bool BasicTimeLogger => bool.Parse( GetConfigKey( "BasicTimeLogger" ) );
+
+        public static int BasicTimeLoggerFrequency => int.Parse( GetConfigKey( "BasicTimeLoggerFrequency" ) );
         #endregion Basic Time Logger Settings
 
         /// <summary>

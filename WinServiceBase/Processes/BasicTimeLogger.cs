@@ -23,7 +23,7 @@ namespace WinServiceBase.Processes
         {
             get
             {
-                return 1;
+                return ConfigKeys.BasicTimeLoggerFrequency;
             }
         }
 
