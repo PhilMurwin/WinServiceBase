@@ -4,7 +4,7 @@ using System.ServiceProcess;
 using WinServiceBase.Framework;
 using WinServiceBase.Framework.Logging;
 
-namespace WinServiceBase.App_Entry
+namespace WinServiceBase.App
 {
     public partial class WinService : ServiceBase
     {

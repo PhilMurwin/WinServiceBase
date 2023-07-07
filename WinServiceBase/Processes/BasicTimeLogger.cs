@@ -1,4 +1,5 @@
 ﻿using System;
+using WinServiceBase.App;
 using WinServiceBase.Framework;
 
 namespace WinServiceBase.Processes
@@ -9,23 +10,11 @@ namespace WinServiceBase.Processes
     /// </summary>
     public class BasicTimeLogger : ProcessBase
     {
-        public override string StopCode
-        {
-            get { return "ExitLogger"; }
-        }
+        public override string StopCode => "ExitLogger";
 
-        public override bool CanStartProcess
-        {
-            get { return ConfigKeys.BasicTimeLogger; }
-        }
+        public override bool CanStartProcess => ConfigKeys.BasicTimeLogger;
 
-        public override int Frequency
-        {
-            get
-            {
-                return ConfigKeys.BasicTimeLoggerFrequency;
-            }
-        }
+        public override int Frequency => ConfigKeys.BasicTimeLoggerFrequency;
 
         /// <summary>
         /// Send message to logger once a minute

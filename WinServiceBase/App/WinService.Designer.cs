@@ -1,4 +1,4 @@
-﻿namespace WinServiceBase.App_Entry
+﻿namespace WinServiceBase.App
 {
     partial class WinService
     {

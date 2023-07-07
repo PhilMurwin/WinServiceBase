@@ -15,6 +15,7 @@ namespace WinServiceBase.Framework
         private Thread _processThread;
         private AutoResetEvent _threadExitEvent;
         private ILogger _logger;
+        private int DelayStartupTime = 2 * MillisecondsInMinute;
 
         /// <summary>
         /// Provides access to a logger for the process
@@ -39,13 +40,15 @@ namespace WinServiceBase.Framework
 
         public string ExitInstructions
         {
-            get { return string.Format( "{0} Process started. Type '{1}' to stop the process.", ProcessName, StopCode ); }
+            get { return $"[{ProcessName}] process started. Type '{StopCode}' to stop the process."; }
         }
 
         public abstract bool CanStartProcess
         {
             get;
         }
+
+        public virtual bool DelayStartup { get; } = false;
 
         private DateTime m_LastRunTime = DateTime.Now;
 
@@ -85,11 +88,18 @@ namespace WinServiceBase.Framework
             // Set LastRunTime to now - frequency so the process executes immediately on startup
             LastRunTime = DateTime.Now.AddMinutes( -Frequency );
 
+            if (DelayStartup)
+            {
+                Thread.Sleep(DelayStartupTime);
+            }
+
+            ProcessLogger.Trace($"Running ExecuteProcess for [{ProcessName}]");
+
             while ( true )
             {
                 if (DateTime.Now >= LastRunTime.AddMinutes(Frequency ) )
                 {
-                    ProcessLogger.Debug( "Calling DoProcessWork for process [{0}].", ProcessName );
+                    ProcessLogger.Debug( $"Calling DoProcessWork for [{ProcessName}].");
 
                     DoProcessWork();
 
@@ -119,7 +129,7 @@ namespace WinServiceBase.Framework
         {
             try
             {
-                ProcessLogger.Info(string.Format("*** Start process [{0}] ***", ProcessName));
+                ProcessLogger.Trace($"Start process [{ProcessName}]");
 
                 //Create event that will be used to stop the thread
                 _threadExitEvent = new AutoResetEvent(false);
@@ -127,11 +137,11 @@ namespace WinServiceBase.Framework
                 _processThread = new Thread(ExecuteProcess);
                 _processThread.Start();
 
-                ProcessLogger.Info(ProcessName + " has been successfully started.");
+                ProcessLogger.Info($"[{ProcessName}] has been started.");
             }
             catch (Exception err)
             {
-                ProcessLogger.ErrorException( err, string.Format( "Service [{0}] threw an exception during startup", ProcessName ) );
+                ProcessLogger.ErrorException( err, $"Service [{ProcessName}] threw an exception during startup" );
             }
         }
 
@@ -154,19 +164,19 @@ namespace WinServiceBase.Framework
                         isThreadStopped = _processThread.Join(60 * 1000); //wait 60 seconds
                         if (!isThreadStopped)
                         {
-                            ProcessLogger.Warn("Warning: " + ProcessName + " thread has failed to stop in a timely manner.");
+                            ProcessLogger.Warn($"Warning: [{ProcessName}] thread has failed to stop in a timely manner.");
                         }
                     }
                     else
                     {
-                        ProcessLogger.Warn("Warning: unable to stop thread " + ProcessName + ".");
+                        ProcessLogger.Warn($"Warning: unable to stop thread [{ProcessName}].");
                     }
                 }
 
                 //Close all threads as long as we're stopped.  (don't want to close events that are still in a wait)
                 if (isThreadStopped)
                 {
-                    ProcessLogger.Debug(ProcessName + " process has been successfully stopped.");
+                    ProcessLogger.Debug( $"[{ProcessName}] process has been successfully stopped.");
 
                     if (_threadExitEvent != null)
                     {
@@ -178,11 +188,11 @@ namespace WinServiceBase.Framework
                 _threadExitEvent = null;
                 _processThread = null;
 
-                ProcessLogger.Info( string.Format("*** Stop process [{0}] ***", ProcessName) );
+                ProcessLogger.Info( $"Stop process [{ProcessName}]" );
             }
             catch (Exception err)
             {
-                ProcessLogger.ErrorException(err, "Exception caught during process (" + ProcessName + ") stop: " );
+                ProcessLogger.ErrorException(err, $"Exception caught while stopping process [{ProcessName}]." );
             }
         }
 

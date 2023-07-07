@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.ServiceProcess;
 using WinServiceBase.Framework.Logging;
 
-namespace WinServiceBase.App_Entry
+namespace WinServiceBase.App
 {
     static class Program
     {
@@ -24,7 +24,7 @@ namespace WinServiceBase.App_Entry
 
             try
             {
-                Logger.Info( "*** Starting WinServiceBase Program ***" );
+                Logger.Info( "*** Starting WinServiceBase ***" );
 
                 // Parse command line options
                 var cliArgs = CommandLine.Parser.Default.ParseArguments<Options>( args )
@@ -70,7 +70,7 @@ namespace WinServiceBase.App_Entry
 
         private static void ConsoleStartup()
         {
-            Logger.Info( "*** Running Service in command line mode" );
+            Logger.Info( "Running Service in command line mode" );
 
             //Requests a console window from the OS and attaches it to our process
             AllocConsole();

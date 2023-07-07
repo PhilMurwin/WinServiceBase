@@ -19,6 +19,11 @@ namespace WinServiceBase.Framework
             get;
         }
 
+        bool DelayStartup
+        {
+            get;
+        }
+
         /// <summary>
         /// Returns the name of the current process for use in error messages etc...
         /// </summary>

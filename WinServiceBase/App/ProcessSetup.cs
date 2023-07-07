@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using WinServiceBase.Framework;
 
-namespace WinServiceBase.App_Entry
+namespace WinServiceBase.App
 {
     static class ProcessSetup
     {

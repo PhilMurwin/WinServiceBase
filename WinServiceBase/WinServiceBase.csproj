@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>WinServiceBase.App_Entry.Program</StartupObject>
+    <StartupObject>WinServiceBase.App.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CommandLine, Version=2.8.0.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
@@ -57,22 +57,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Entry\WinService.cs">
+    <Compile Include="App\WinService.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="App_Entry\WinService.Designer.cs">
+    <Compile Include="App\WinService.Designer.cs">
       <DependentUpon>WinService.cs</DependentUpon>
     </Compile>
-    <Compile Include="App_Entry\Options.cs" />
-    <Compile Include="App_Entry\ProcessSetup.cs" />
-    <Compile Include="App_Entry\Program.cs" />
-    <Compile Include="App_Data\ConfigKeys.cs" />
+    <Compile Include="App\Options.cs" />
+    <Compile Include="App\ProcessSetup.cs" />
+    <Compile Include="App\Program.cs" />
+    <Compile Include="App\ConfigKeys.cs" />
     <Compile Include="Framework\Logging\ILogger.cs" />
     <Compile Include="Framework\Logging\NLogLogger.cs" />
     <Compile Include="Framework\IProcessBase.cs" />
     <Compile Include="Framework\ProcessBase.cs" />
     <Compile Include="Framework\ProcessDetails.cs" />
     <Compile Include="Processes\BasicTimeLogger.cs" />
+    <Compile Include="Processes\DelayedProcess.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

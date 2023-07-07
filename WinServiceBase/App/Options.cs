@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace WinServiceBase.App_Entry
+namespace WinServiceBase.App
 {
     class Options
     {

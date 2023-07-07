@@ -1,14 +1,18 @@
 ﻿using System.Configuration;
 
-namespace WinServiceBase
+namespace WinServiceBase.App
 {
     public static class ConfigKeys
     {
         #region Basic Time Logger Settings
         public static bool BasicTimeLogger => bool.Parse( GetConfigKey( "BasicTimeLogger" ) );
-
         public static int BasicTimeLoggerFrequency => int.Parse( GetConfigKey( "BasicTimeLoggerFrequency" ) );
         #endregion Basic Time Logger Settings
+
+        #region DelayedProcess Settings
+        public static bool DelayedProcess => bool.Parse(GetConfigKey("DelayedProcess"));
+        public static int DelayedProcessFrequency => int.Parse(GetConfigKey("DelayedProcessFrequency"));
+        #endregion DelayedProcess Settings
 
         /// <summary>
         /// Helper method for getting config keys
